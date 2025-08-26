@@ -1,9 +1,20 @@
+const videoInput = document.getElementById("videoInput");
+const videoPreview = document.getElementById("videoPreview");
+const resultBox = document.getElementById("result");
+
+videoInput.addEventListener("change", () => {
+    const file = videoInput.files[0];
+    if (file) {
+        const url = URL.createObjectURL(file);
+        videoPreview.src = url;
+        videoPreview.style.display = "block";
+    }
+});
+
 document.getElementById("uploadForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    let fileInput = document.getElementById("videoInput");
-    let file = fileInput.files[0];
-
+    let file = videoInput.files[0];
     if (!file) {
         alert("กรุณาเลือกไฟล์วิดีโอ");
         return;
@@ -11,6 +22,9 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
 
     let formData = new FormData();
     formData.append("file", file);
+
+    resultBox.style.display = "block";
+    resultBox.innerText = "⏳ กำลังประมวลผล...";
 
     try {
         let response = await fetch("http://127.0.0.1:5000/upload", {
@@ -20,13 +34,13 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
 
         let data = await response.json();
         if (data.error) {
-            document.getElementById("result").innerText = data.error;
+            resultBox.innerText = "❌ " + data.error;
         } else {
-            document.getElementById("result").innerText =
-                `ท่าที่ตรวจพบ: ${data.gesture} (ความมั่นใจ: ${(data.confidence*100).toFixed(2)}%)`;
+            resultBox.innerText =
+                `✅ ท่าที่ตรวจพบ: ${data.gesture}\n📊 ความมั่นใจ: ${(data.confidence*100).toFixed(2)}%`;
         }
     } catch (err) {
-        document.getElementById("result").innerText = "❌ เกิดข้อผิดพลาดในการเชื่อมต่อ backend";
+        resultBox.innerText = "❌ เกิดข้อผิดพลาดในการเชื่อมต่อ backend";
         console.error(err);
     }
 });
