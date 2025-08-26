@@ -6,14 +6,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>ระบบรู้จำภาษามือ</h1>
+  <div class="container">
+    <h1>ระบบรู้จำภาษามือ ✋</h1>
 
-  <form id="uploadForm">
-    <input type="file" id="videoInput" accept="video/*" required>
-    <button type="submit">อัปโหลดและประมวลผล</button>
-  </form>
+    <form id="uploadForm">
+      <label for="videoInput" class="file-label">เลือกวิดีโอ</label>
+      <input type="file" id="videoInput" accept="video/*" hidden required>
+      <video id="videoPreview" controls></video>
+      <button type="submit">🚀 อัปโหลดและประมวลผล</button>
+    </form>
 
-  <div id="result">ผลลัพธ์จะแสดงที่นี่...</div>
+    <div id="result">ผลลัพธ์จะแสดงที่นี่...</div>
+  </div>
 
   <script src="script.js"></script>
 </body>
